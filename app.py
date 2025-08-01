@@ -42,9 +42,19 @@ st.subheader("🔍 Feature Importance (SHAP)")
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X)
 
-# For binary classification or regression models
-fig_shap = shap.summary_plot(shap_values, X, plot_type="bar", show=False)
-st.pyplot(bbox_inches='tight')
+# Render SHAP summary plot (bar)
+# Use shap_values[1] if binary classification (label 1 = positive class)
+shap_bar_vals = shap_values[1] if isinstance(shap_values, list) else shap_values
+
+# SHAP bar plot
+shap.summary_plot(shap_bar_vals, X, plot_type="bar", show=False)
+fig = plt.gcf()
+
+# Dynamically adjust height based on number of features
+height = max(5, len(X.columns) * 0.3)
+fig.set_size_inches(10, height)
+
+st.pyplot(fig)
 
 # Clustering section
 st.subheader("🧩 Customer Clustering (PCA + KMeans)")
@@ -61,7 +71,7 @@ clusters = kmeans.fit_predict(X_pca)
 pca_df = pd.DataFrame(X_pca, columns=["PC1", "PC2"])
 pca_df["cluster"] = clusters
 
-fig, ax = plt.subplots(figsize=(8, 6))
+fig, ax = plt.subplots(figsize=(10, 6))
 sns.scatterplot(data=pca_df, x="PC1", y="PC2", hue="cluster", palette="Set2", ax=ax)
 st.pyplot(fig)
 
