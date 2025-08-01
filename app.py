@@ -68,4 +68,4 @@ st.pyplot(fig)
 # Cluster summary
 df["cluster"] = clusters
 st.subheader("📊 Cluster Profiles")
-st.dataframe(df.groupby("cluster").mean().round(2))
+st.dataframe(df.groupby("cluster").mean(numeric_only=True).round(2))
