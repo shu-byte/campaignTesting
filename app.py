@@ -42,7 +42,8 @@ st.subheader("🔍 Feature Importance (SHAP)")
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(X)
 
-fig_shap = shap.summary_plot(shap_values[1], X, plot_type="bar", show=False)
+# For binary classification or regression models
+fig_shap = shap.summary_plot(shap_values, X, plot_type="bar", show=False)
 st.pyplot(bbox_inches='tight')
 
 # Clustering section
